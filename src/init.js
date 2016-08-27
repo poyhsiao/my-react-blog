@@ -7,12 +7,14 @@
  */
 import express from 'express';
 
-import settings from './config/global.js';
-import route from './config/route.js';
+import settings from './settings/global.js';
+import route from './settings/route.js';
+import { logger } from './settings/utils.js';
 
 const SETTINGS = settings();
 const app = express();
 
+logger(app, SETTINGS);
 route(app);
 
 app.listen(SETTINGS.port, () => {

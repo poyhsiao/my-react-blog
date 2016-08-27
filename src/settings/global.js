@@ -15,6 +15,7 @@ export default () => {
     path: {
       root: proot,
       src: pjoin(proot, 'src'),
+      log: pjoin(proot, 'log'),
     },
   };
 
