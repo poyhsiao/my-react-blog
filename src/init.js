@@ -6,6 +6,7 @@
  *
  */
 import express from 'express';
+import winston from 'winston';
 
 import settings from './settings/global.js';
 import route from './settings/route.js';
@@ -27,16 +28,18 @@ const app = express();
 app.set('SETTINGS', SETTINGS);
 /** set PUTILS as global function */
 app.set('PUTILS', putils);
+/** put winston as logger into LOGGER */
+app.set('LOGGER', winston);
 
 /** Database connction */
 app.set('SQL', putils.sequelize(app));
 
 /** Log setting */
 putils.logger(app, SETTINGS);
+
 /** routing rule setting */
 route(app);
 
 app.listen(SETTINGS.port, SETTINGS.server, () => {
   console.log(`server is listen to ${SETTINGS.server} with port #${SETTINGS.port}`);
-  console.log(app.get('SQL'));
 });
