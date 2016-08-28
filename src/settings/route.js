@@ -29,7 +29,7 @@ export default app => {
   app.route('/installDB')
     .post((req, res) => {
       if ('clean' in req.body) {
-        if (req.body.clean === '1') {
+        if ('1' === req.body.clean) {
           putils.initialModel(app, true, () => {
             res.json({
               status: 'OK',
@@ -53,7 +53,7 @@ export default app => {
     })
     .get((req, res) => {
       if ('clean' in req.query) {
-        if (req.query.clean === '1') {
+        if ('1' === req.query.clean) {
           putils.initialModel(app, true, () => {
             res.json({
               status: 'OK',

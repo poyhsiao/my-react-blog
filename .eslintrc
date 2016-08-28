@@ -1,3 +1,7 @@
 {
-    "extends": "airbnb"
+  "extends": "airbnb",
+  "rules": {
+    "no-console": "warn",
+    "yoda": ["warn", "always", { "exceptRange": false }]
+  }  
 }
