@@ -9,7 +9,7 @@ import express from 'express';
 
 import settings from './settings/global.js';
 import route from './settings/route.js';
-import { logger, sequelize, initialModel } from './settings/utils.js';
+import * as putils from './settings/utils.js';
 
 /**
  * System global setting
@@ -23,13 +23,16 @@ const SETTINGS = settings();
  */
 const app = express();
 
+/** set settings as global variable */
+app.set('SETTINGS', SETTINGS);
+/** set PUTILS as global function */
+app.set('PUTILS', putils);
+
 /** Database connction */
-app.set('SQL', sequelize(app));
-/** initial all model */
-initialModel(app);
+app.set('SQL', putils.sequelize(app));
 
 /** Log setting */
-logger(app, SETTINGS);
+putils.logger(app, SETTINGS);
 /** routing rule setting */
 route(app);
 
