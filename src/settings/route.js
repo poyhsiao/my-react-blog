@@ -9,10 +9,18 @@
 // import express from 'express';
 import * as bodyParser from 'body-parser';
 import multer from 'multer';
+import Uadmin from './../controls/user/admin.js';
 
 export default app => {
   const upload = multer();
   const putils = app.get('PUTILS');
+
+  const {
+    newer: userNewer,
+    modifier: userModifier,
+    deleter: userDeleter,
+    query: userQuery,
+  } = new Uadmin();
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -75,6 +83,12 @@ export default app => {
         });
       }
     });
+
+  app.route('/user/admin')
+    .get(userQuery)
+    .post(userNewer)
+    .put(userModifier)
+    .delete(userDeleter);
 
   /** default route rule */
   app.route('/')

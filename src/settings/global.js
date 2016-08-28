@@ -18,6 +18,7 @@ export default () => {
       src: pjoin(proot, 'src'),
       log: pjoin(proot, 'log'),
       model: pjoin(proot, 'src', 'model'),
+      controls: pjoin(proot, 'src', 'controls'),
     },
     db: {
       sqluser: '',

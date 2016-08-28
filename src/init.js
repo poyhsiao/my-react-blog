@@ -10,7 +10,7 @@ import winston from 'winston';
 
 import settings from './settings/global.js';
 import route from './settings/route.js';
-import * as putils from './settings/utils.js';
+import Utils from './settings/utils.js';
 
 /**
  * System global setting
@@ -24,18 +24,20 @@ const SETTINGS = settings();
  */
 const app = express();
 
+/** initial putils */
+const putils = new Utils(app);
+
 /** set settings as global variable */
 app.set('SETTINGS', SETTINGS);
 /** set PUTILS as global function */
 app.set('PUTILS', putils);
 /** put winston as logger into LOGGER */
 app.set('LOGGER', winston);
-
 /** Database connction */
-app.set('SQL', putils.sequelize(app));
+app.set('SQL', putils.sequelize());
 
 /** Log setting */
-putils.logger(app, SETTINGS);
+putils.logger();
 
 /** routing rule setting */
 route(app);
