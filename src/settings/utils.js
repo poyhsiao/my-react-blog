@@ -15,7 +15,7 @@ import { join as pjoin } from 'path';
 import settings from './global.js';
 
 /** Data model generator */
-import { userModel } from './../model/user.js';
+import UserModel from './../model/user.js';
 
 const SETTINGS = settings();
 
@@ -91,11 +91,9 @@ export default class {
    * initial model (database schema)
    * @type {Boolean}
    */
-  initialModel(forceUpdate = false, callback) {
-    userModel(this.app, forceUpdate);
-    if (callback) {
-      return callback();
-    }
-    return true;
+  initialModel(force = false, callback) {
+    const userModel = new UserModel(this.app);
+
+    return userModel.admin().sync({ force }).asCallback(callback);
   }
 }

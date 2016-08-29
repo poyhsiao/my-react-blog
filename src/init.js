@@ -7,10 +7,13 @@
  */
 import express from 'express';
 import winston from 'winston';
+import promise from 'bluebird';
 
 import settings from './settings/global.js';
 import route from './settings/route.js';
 import Utils from './settings/utils.js';
+
+global.Promise = promise;
 
 /**
  * System global setting

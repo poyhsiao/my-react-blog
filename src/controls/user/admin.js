@@ -5,8 +5,13 @@
  * Author: Kim Hsiao
  *
  */
+import UserAdminModel from './../../model/user.js';
 
 export default class {
+  constructor(app) {
+    this.app = app;
+  }
+
   newer(req, res, next) {
     res.json({
       status: 'newer',
@@ -32,10 +37,23 @@ export default class {
   }
 
   query(req, res, next) {
-    res.json({
-      status: 'query',
-    });
+    const app = req.app;
+    const userAdminModel = new UserAdminModel(app);
+    const User = userAdminModel.admin();
 
-    return next();
+    User.findAll()
+      .then(users => {
+        res.json({
+          status: 'ok',
+          method: 'query',
+          users,
+        });
+
+        return next || true;
+      })
+      .catch(err => {
+        console.error(err);
+      })
+      .asCallback(next);
   }
 }

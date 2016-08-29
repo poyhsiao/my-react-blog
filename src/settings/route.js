@@ -9,7 +9,7 @@
 // import express from 'express';
 import * as bodyParser from 'body-parser';
 import multer from 'multer';
-import Uadmin from './../controls/user/admin.js';
+import UserAdminControl from './../controls/user/admin.js';
 
 export default app => {
   const upload = multer();
@@ -20,7 +20,7 @@ export default app => {
     modifier: userModifier,
     deleter: userDeleter,
     query: userQuery,
-  } = new Uadmin();
+  } = new UserAdminControl(app);
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,14 +38,14 @@ export default app => {
     .post((req, res) => {
       if ('clean' in req.body) {
         if ('1' === req.body.clean) {
-          putils.initialModel(app, true, () => {
+          putils.initialModel(true, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data has already cleaned)',
             });
           });
         } else {
-          putils.initialModel(app, false, () => {
+          putils.initialModel(false, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data is preserved)',
@@ -62,14 +62,14 @@ export default app => {
     .get((req, res) => {
       if ('clean' in req.query) {
         if ('1' === req.query.clean) {
-          putils.initialModel(app, true, () => {
+          putils.initialModel(true, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data has already cleaned)',
             });
           });
         } else {
-          putils.initialModel(app, false, () => {
+          putils.initialModel(false, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data is preserved)',

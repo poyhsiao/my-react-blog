@@ -8,95 +8,84 @@
 
 import Sequelize from 'sequelize';
 
-export function userModel(app, regenerate = false, callback) {
-  const sequelize = app.get('SQL');
+export default class {
+  constructor(app) {
+    this.app = app;
+    this.sequelize = app.get('SQL');
+  }
 
-  const User = sequelize.define('user', {
-    /** user name */
-    user_name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        len: {
+  admin() {
+    const User = this.sequelize.define('user', {
+      /** user name */
+      user_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          len: {
+            args: [3, 100],
+            msg: 'ERR_USER_NAME_LENGTH',
+          },
+        },
+      },
+
+      /** login name */
+      display_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
           args: [3, 100],
-          msg: 'ERR_USER_NAME_LENGTH',
+          msg: 'ERR_DISPLAY_NAME_LENGTH',
         },
       },
-    },
 
-    /** login name */
-    display_name: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        args: [3, 100],
-        msg: 'ERR_DISPLAY_NAME_LENGTH',
-      },
-    },
-
-    /** user email */
-    email: {
-      type: Sequelize.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        isEmail: {
-          msg: 'ERR_INVALID_EMAIL',
+      /** user email */
+      email: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
+        validate: {
+          isEmail: {
+            msg: 'ERR_INVALID_EMAIL',
+          },
         },
       },
-    },
 
-    /** gender */
-    gender: {
-      type: Sequelize.ENUM,
-      values: ['female', 'male', 'other'],
-      defaultValue: 'male',
-      allowNull: false,
-      validate: {
-        isIn: {
-          args: [['female', 'male', 'other']],
-          msg: 'ERR_GENDER_TYPE',
+      /** gender */
+      gender: {
+        type: Sequelize.ENUM,
+        values: ['female', 'male', 'other'],
+        defaultValue: 'male',
+        allowNull: false,
+        validate: {
+          isIn: {
+            args: [['female', 'male', 'other']],
+            msg: 'ERR_GENDER_TYPE',
+          },
         },
       },
-    },
 
-    /** if the user is enabled */
-    enabled: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-      allowNull: false,
-    },
+      /** if the user is enabled */
+      enabled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
 
-    /** password of the user (md5 with username/password) */
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        len: {
-          args: [6, 20],
-          msg: 'ERR_PASSWORD_LENGTH',
+      /** password of the user (md5 with username/password) */
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+          len: {
+            args: [6, 20],
+            msg: 'ERR_PASSWORD_LENGTH',
+          },
         },
       },
-    },
-  });
+    });
 
-  User.sync({ force: regenerate })
-  .then(
-    () => {
-      if (callback) {
-        return callback();
-      }
-      return true;
-    },
-    () => {
-      if (callback) {
-        return callback('ERROR');
-      }
-      return false;
-    }
-  );
+    return User;
+  }
 }
-
-export default {};
