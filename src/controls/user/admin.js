@@ -13,8 +13,27 @@ export default class {
   }
 
   newer(req, res, next) {
+    const {
+      user_name,
+      display_name,
+      email,
+      gender,
+      enabled,
+      password,
+      ...payload,
+    } = req.body;
+
     res.json({
       status: 'newer',
+      body: {
+        user_name,
+        display_name,
+        email,
+        gender,
+        enabled,
+        password,
+        payload,
+      },
     });
 
     return next();

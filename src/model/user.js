@@ -68,9 +68,16 @@ export default class {
 
       /** if the user is enabled */
       enabled: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.ENUM,
+        values: ['true', 'false'],
+        defaultValue: 'false',
         allowNull: false,
+        validate: {
+          isIn: {
+            args: [['true', 'false']],
+            msg: 'ERR_ENABLED_TYPE',
+          },
+        },
       },
 
       /** password of the user (md5 with username/password) */

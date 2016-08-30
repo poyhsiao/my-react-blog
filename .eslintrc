@@ -3,5 +3,10 @@
   "rules": {
     "no-console": "warn",
     "yoda": ["warn", "always", { "exceptRange": false }]
-  }  
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  }
 }
