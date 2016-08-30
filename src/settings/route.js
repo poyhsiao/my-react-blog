@@ -9,7 +9,7 @@
 // import express from 'express';
 import * as bodyParser from 'body-parser';
 import multer from 'multer';
-import UserAdminControl from './../controls/user/admin.js';
+import UserAdminControl from './../controls/user/UserAdminControl.js';
 
 export default app => {
   const upload = multer();
@@ -20,7 +20,7 @@ export default app => {
     modifier: userModifier,
     deleter: userDeleter,
     query: userQuery,
-  } = new UserAdminControl(app);
+} = new UserAdminControl();
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));

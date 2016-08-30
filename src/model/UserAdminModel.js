@@ -35,8 +35,10 @@ export default class {
         allowNull: false,
         unique: true,
         validate: {
-          args: [3, 100],
-          msg: 'ERR_DISPLAY_NAME_LENGTH',
+          len: {
+            args: [3, 100],
+            msg: 'ERR_DISPLAY_NAME_LENGTH',
+          },
         },
       },
 
@@ -86,7 +88,7 @@ export default class {
         allowNull: false,
         validate: {
           len: {
-            args: [6, 20],
+            args: [32],
             msg: 'ERR_PASSWORD_LENGTH',
           },
         },

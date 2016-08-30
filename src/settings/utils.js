@@ -6,8 +6,11 @@
  *
  */
 
+import _ from 'lodash';
 import morgan from 'morgan';
 import moment from 'moment';
+import camelCase from 'camelcase-keys';
+import snakeCase from 'snakecase-keys';
 // import * as FileStreamRotator from 'file-stream-rotator';
 import Sequelize from 'sequelize';
 
@@ -15,7 +18,7 @@ import { join as pjoin } from 'path';
 import settings from './global.js';
 
 /** Data model generator */
-import UserModel from './../model/user.js';
+import UserAdminModel from './../model/UserAdminModel.js';
 
 const SETTINGS = settings();
 
@@ -92,8 +95,21 @@ export default class {
    * @type {Boolean}
    */
   initialModel(force = false, callback) {
-    const userModel = new UserModel(this.app);
+    const userAdminModel = new UserAdminModel(this.app);
 
-    return userModel.admin().sync({ force }).asCallback(callback);
+    return userAdminModel.admin().sync({ force }).asCallback(callback);
+  }
+
+  convertCase(obj, type = 'camel') {
+    try {
+      if (_.isString(obj)) {
+        return ('camel' === type) ? _.camelCase(obj) : _.snakeCase(obj);
+      } else {
+        return ('camel' === type) ? camelCase(obj) : snakeCase(obj);
+      }
+    } catch (err) {
+      console.warn({ err });
+      return obj;
+    }
   }
 }
