@@ -57,8 +57,7 @@ export default class {
         },
         transaction: t,
       })
-    ))
-    .spread((result, newer) => {
+    )).spread((result, newer) => {
       const { id } = result.dataValues;
       /** check if the user create new one */
       if (true === newer) {
@@ -177,8 +176,6 @@ export default class {
         console.error({ err });
       })
       .asCallback(next);
-
-    // return next();
   }
 
 
@@ -191,11 +188,43 @@ export default class {
    * @return {void}      no return required but callback function
    */
   deleter(req, res, next) {
-    res.json({
-      status: 'deleter',
-    });
+    const app = req.app;
+    const userAdminModel = new UserAdminModel(app);
+    const User = userAdminModel.admin();
+    // const sql = app.get('SQL');
 
-    return next();
+    const {
+      id,
+      ...payload,
+    } = req.body;
+
+    User.destroy({
+      where: { id },
+    })
+    .then(rows => {
+      res.json({
+        status: 'OK',
+        msg: 'DELETE_USER_SUCCESS',
+        rows,
+        body: {
+          id,
+          payload,
+        },
+      });
+    })
+    .catch(err => {
+      res.json({
+        status: 'ERROR',
+        msg: 'DELETE_USER_FAIL',
+        err,
+        body: {
+          id,
+          payload,
+        },
+      });
+      console.error({ err });
+    })
+    .asCallback(next);
   }
 
   /**
@@ -220,6 +249,11 @@ export default class {
       })
       .catch(err => {
         console.error(err);
+        res.json({
+          status: 'ERROR',
+          method: 'query',
+          err,
+        });
       })
       .asCallback(next);
   }
