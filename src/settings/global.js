@@ -20,6 +20,11 @@ export default () => {
       model: pjoin(proot, 'src', 'model'),
       controls: pjoin(proot, 'src', 'controls'),
     },
+    token: {
+      algorithm: 'HS512',  // default is HS256
+      secret: 'helloAlliamkimhsiao',
+      expiresIn: '1d',  // 2 days
+    },
     db: {
       sqluser: '',
       sqlpassword: '',

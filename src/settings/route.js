@@ -9,7 +9,9 @@
 // import express from 'express';
 import * as bodyParser from 'body-parser';
 import multer from 'multer';
+
 import UserAdminControl from './../controls/user/UserAdminControl.js';
+import Auth from './../controls/Authenticate/Auth.js';
 
 export default app => {
   const upload = multer();
@@ -20,7 +22,9 @@ export default app => {
     modifier: userModifier,
     deleter: userDeleter,
     query: userQuery,
-} = new UserAdminControl();
+  } = new UserAdminControl();
+
+  const { signIn, verify } = new Auth();
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,6 +88,14 @@ export default app => {
       }
     });
 
+  app.route('/Authenticate')
+    .post(signIn);
+
+  app.route('/test')
+    .all(verify);
+  /**
+   * User admin RESTful
+   */
   app.route('/user/admin')
     .get(userQuery)
     .post(userNewer)
