@@ -94,19 +94,27 @@ export default class {
    * initial model (database schema)
    * @type {Boolean}
    */
-  initialModel(force = false, callback) {
-    const userAdminModel = new UserAdminModel(this.app);
+  initialModel(app, force = false, callback) {
+    const userAdminModel = new UserAdminModel(app);
 
-    return userAdminModel.admin().sync({ force }).asCallback(callback);
+    return userAdminModel.admin()
+            .sync({ force })
+            // .catch(err => {
+            //   console.error({ err });
+            // })
+            .then(() => {
+              userAdminModel.indexes();
+            })
+            .asCallback(callback);
   }
 
   convertCase(obj, type = 'camel') {
     try {
       if (_.isString(obj)) {
         return ('camel' === type) ? _.camelCase(obj) : _.snakeCase(obj);
-      } else {
-        return ('camel' === type) ? camelCase(obj) : snakeCase(obj);
       }
+
+      return ('camel' === type) ? camelCase(obj) : snakeCase(obj);
     } catch (err) {
       console.warn({ err });
       return obj;

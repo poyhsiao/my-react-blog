@@ -8,12 +8,14 @@
 import express from 'express';
 import winston from 'winston';
 import promise from 'bluebird';
+import _ from 'lodash';
 
 import settings from './settings/global.js';
 import route from './settings/route.js';
 import Utils from './settings/utils.js';
 
 global.Promise = promise;
+global._ = _;
 
 /**
  * System global setting

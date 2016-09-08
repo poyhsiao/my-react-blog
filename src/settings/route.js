@@ -42,14 +42,14 @@ export default app => {
     .post((req, res) => {
       if ('clean' in req.body) {
         if ('1' === req.body.clean) {
-          putils.initialModel(true, () => {
+          putils.initialModel(app, true, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data has already cleaned)',
             });
           });
         } else {
-          putils.initialModel(false, () => {
+          putils.initialModel(app, false, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data is preserved)',
@@ -66,14 +66,18 @@ export default app => {
     .get((req, res) => {
       if ('clean' in req.query) {
         if ('1' === req.query.clean) {
-          putils.initialModel(true, () => {
-            res.json({
+          putils.initialModel(app, true, (err, result) => {
+            if (err && !_.isEmpty(err)) {
+              return console.error({ err });
+            }
+            console.info({ result });
+            return res.json({
               status: 'OK',
               msg: 'Initial model completed (all data has already cleaned)',
             });
           });
         } else {
-          putils.initialModel(false, () => {
+          putils.initialModel(app, false, () => {
             res.json({
               status: 'OK',
               msg: 'Initial model completed (all data is preserved)',
@@ -93,6 +97,20 @@ export default app => {
 
   app.route('/test')
     .all(verify);
+
+  app.route('/db/test')
+    .all((req, res, next) => {
+      const sql = app.get('SQL');
+      sql.authenticate()
+        .then(err => {
+          console.log('Connection has been established successfully.');
+          console.info({ err });
+        })
+        .catch(err => {
+          console.error({ err });
+        })
+        .asCallback(next);
+    });
   /**
    * User admin RESTful
    */

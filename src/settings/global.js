@@ -26,17 +26,38 @@ export default () => {
       expiresIn: '1d',  // 2 days
     },
     db: {
-      sqluser: '',
-      sqlpassword: '',
-      sqldatabase: '',
+      sqluser: 'kimhsiao',
+      sqlpassword: 'hsia0@123',
+      sqldatabase: 'my_react_blog',
       sql: {
-        dialect: 'sqlite',
+        host: '172.16.58.130',
+        dialect: 'mariadb',
         pool: {
           max: 10,
           min: 0,
           idle: 10000,
         },
-        storage: pjoin(proot, 'storage', 'database.sqlite'),
+        define: {
+          underscored: false,
+          freezeTableName: false,
+          syncOnAssociation: true,
+          charset: 'utf8mb4',
+          collate: 'utf8mb4_unicode_ci',
+        },
+        // storage: pjoin(proot, 'storage', 'database.sqlite'),
+      },
+    },
+    mydb: {
+      user: 'kimhsiao',
+      password: 'hsia0@123',
+      portocol: 'mysql',
+      port: 3306,
+      database: 'my_react_blog',
+      query: {
+        pool: true,
+        debug: false,
+        timezone: 'local',
+        strdates: false,
       },
     },
   };

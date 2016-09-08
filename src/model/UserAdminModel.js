@@ -20,7 +20,7 @@ export default class {
       user_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        // unique: true,
         validate: {
           len: {
             args: [3, 100],
@@ -33,7 +33,7 @@ export default class {
       display_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        // unique: 'user_unique',
         validate: {
           len: {
             args: [3, 100],
@@ -45,7 +45,7 @@ export default class {
       /** user email */
       email: {
         type: Sequelize.STRING,
-        unique: true,
+        // unique: 'user_unique',
         allowNull: false,
         validate: {
           isEmail: {
@@ -93,6 +93,22 @@ export default class {
           },
         },
       },
+    }, {
+      indexes: [
+        {
+          name: 'user_admin_user_name',
+          where: {
+            status: 'public',
+          },
+          fields: [
+            'user_name',
+            'display_name',
+            'email',
+            'gender',
+            'enabled',
+          ],
+        },
+      ],
     });
 
     return User;
